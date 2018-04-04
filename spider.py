@@ -57,10 +57,10 @@ class Spider(object):
                 cv2.waitKey(3000)
             except:
                 print('[ERR] failed to import cv2. please input certcode from %s' % certcode_path)
-            certcode = str(input('[I N] cert code: '))
+            certcode = str(input('[I N] certcode: '))
             return certcode
 
-        print('[LOG] logining %s ..' % url)
+        print('[LOG] start to login %s ..' % url)
         information = Cache('./data')
         certcode = get_certcode(certcode_url) if certcode_url else None
         data = information.load('login')
@@ -86,5 +86,5 @@ class Spider(object):
         response = self.post(url, data=data, headers=self.headers)
         self.html_save(response, 'login.html')
 
-
+        
         return success_judge(response)
