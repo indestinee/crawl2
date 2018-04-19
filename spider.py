@@ -57,7 +57,7 @@ class Spider(object):
                 import cv2
                 print('[SUC] successfully import cv2. please watch the image window and input certcode..')
                 img = cv2.imread(certcode_path)
-                cv2.imshow('img', img)
+                cv2.imshow(cache_name, img)
                 cv2.waitKey(3000)
             except:
                 print('[ERR] failed to import cv2. please input certcode from %s' % certcode_path)
