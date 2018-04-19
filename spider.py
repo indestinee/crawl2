@@ -38,6 +38,9 @@ class Spider(object):
     def html_save(self, response, name):
         self.cache.bin_save(response.content, name)
 
+    def str_save(self, text, name):
+        self.cache.str_save(text, name)
+
     def download(self, name, *args, **kwargs):
         self.html_save(self.get(*args, **kwargs), name)
 
