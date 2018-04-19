@@ -42,7 +42,8 @@ class Spider(object):
         self.html_save(self.get(*args, **kwargs), name)
 
 
-    def login(self, url, success_judge, certcode_url=None):
+    def login(self, url, success_judge, \
+            certcode_url=None, cache_name='./data'):
         def get_certcode(url):
             print('[LOG] downloading certcode from %s ..' % url)
             name = 'certcode.jpg'
@@ -61,7 +62,7 @@ class Spider(object):
             return certcode
 
         print('[LOG] start to login %s ..' % url)
-        information = Cache('./data')
+        information = Cache(cache_name)
         certcode = get_certcode(certcode_url) if certcode_url else None
         data = information.load('login')
         if not data:
@@ -82,6 +83,8 @@ class Spider(object):
         if certcode:
             data['checkCode'] = certcode
         ####    ####    ####    ####
+
+        print('[LOG] hi, user %s.' % data['nickName'])
 
         response = self.post(url, data=data, headers=self.headers)
         self.html_save(response, 'login.html')
