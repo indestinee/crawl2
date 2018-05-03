@@ -1,4 +1,4 @@
-import re, requests, os, getpass
+import re, requests, os
 from config import cfg
 from utils import Cache
 
@@ -46,7 +46,10 @@ class Spider(object):
 
 
     def login(self, url, success_judge, \
-            certcode_url=None, cache_name='./data'):
+            certcode_url=None, cache_name='./data', anonymous=False):
+        from getpass import getpass
+        _input = getpass if anonymous else input
+        
         def get_certcode(url):
             print('[LOG] downloading certcode from %s ..' % url)
             name = 'certcode.jpg'
@@ -69,9 +72,9 @@ class Spider(object):
         certcode = get_certcode(certcode_url) if certcode_url else None
         data = information.load('login')
         if not data:
-            username = input('[I N] username: ')
-            password = getpass.getpass('[I N] password: ')
-            tel = input('[I N] tel: ')
+            username = _input('[I N] username: ')
+            password = getpass('[I N] password: ')
+            tel = _input('[I N] tel: ')
             ####    ####    ####    ####
             #   change data format to what target website needs
             data = {
@@ -89,7 +92,8 @@ class Spider(object):
             data['checkCode'] = certcode
         ####    ####    ####    ####
 
-        print('[LOG] hi, user %s.' % data['nickName'])
+        print('[LOG] hi, user %s.' % (data['nickName'] \
+                if not anonymous else 'anonymous'))
 
         response = self.post(url, data=data, headers=self.headers)
         self.html_save(response, 'login.html')
