@@ -71,6 +71,7 @@ class Spider(object):
         if not data:
             username = input('[I N] username: ')
             password = input('[I N] password: ')
+            tel = input('[I N] tel: ')
             ####    ####    ####    ####
             #   change data format to what target website needs
             data = {
@@ -79,6 +80,7 @@ class Spider(object):
                 'logintype': 'PLATFORM',
             }
             ####    ####    ####    ####
+            information.save(tel, 'tel')
             information.save(data, 'login')
         
         ####    ####    ####    ####
