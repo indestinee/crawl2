@@ -1,4 +1,4 @@
-import re, requests, os
+import re, requests, os, getpass
 from config import cfg
 from utils import Cache
 
@@ -70,7 +70,7 @@ class Spider(object):
         data = information.load('login')
         if not data:
             username = input('[I N] username: ')
-            password = input('[I N] password: ')
+            password = getpass.getpass('[I N] password: ')
             tel = input('[I N] tel: ')
             ####    ####    ####    ####
             #   change data format to what target website needs
