@@ -69,7 +69,6 @@ class Spider(object):
 
         print('[LOG] start to login %s ..' % url)
         information = Cache(cache_name)
-        certcode = get_certcode(certcode_url) if certcode_url else None
         data = information.load('login')
         if not data:
             username = _input('[I N] username: ')
@@ -85,7 +84,8 @@ class Spider(object):
             ####    ####    ####    ####
             information.save(tel, 'tel')
             information.save(data, 'login')
-        
+        certcode = get_certcode(certcode_url) if certcode_url else None
+
         ####    ####    ####    ####
         #   change data format to what target website needs
         if certcode:
