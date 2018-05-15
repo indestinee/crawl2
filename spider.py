@@ -3,9 +3,10 @@ from config import cfg
 from utils import Cache
 
 class Spider(object):
-    def __init__(self, *, headers=cfg.default_headers, \
+    def __init__(self, *, timeout=3, headers=cfg.default_headers, \
             headers_path=None, keys=None, cache_path='html_cache'):
         self.sess = requests.Session()
+        self.timeout=timeout
         self.headers = self.make_headers(headers_path, keys) \
             if isinstance(headers_path, str) else headers
         self.cache_path = cache_path
@@ -28,11 +29,15 @@ class Spider(object):
     def get(self, *args, **kwargs):
         if 'headers' not in kwargs:
             kwargs['headers'] = self.headers
+        if 'timeout' not in kwargs:
+            kwargs['timeout'] = self.timeout
         return self.sess.get(*args, **kwargs)
             
     def post(self, *args, **kwargs):
         if 'headers' not in kwargs:
             kwargs['headers'] = self.headers
+        if 'timeout' not in kwargs:
+            kwargs['timeout'] = self.timeout
         return self.sess.post(*args, **kwargs)
 
     def html_save(self, response, name):
