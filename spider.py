@@ -29,15 +29,15 @@ class Spider(object):
     def get(self, *args, **kwargs):
         if 'headers' not in kwargs:
             kwargs['headers'] = self.headers
-        if 'timeout' not in kwargs:
-            kwargs['timeout'] = self.timeout
+        # if 'timeout' not in kwargs:
+            # kwargs['timeout'] = self.timeout
         return self.sess.get(*args, **kwargs)
             
     def post(self, *args, **kwargs):
         if 'headers' not in kwargs:
             kwargs['headers'] = self.headers
-        if 'timeout' not in kwargs:
-            kwargs['timeout'] = self.timeout
+        # if 'timeout' not in kwargs:
+            # kwargs['timeout'] = self.timeout
         return self.sess.post(*args, **kwargs)
 
     def html_save(self, response, name):
