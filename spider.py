@@ -3,7 +3,7 @@ from config import cfg
 from utils import Cache
 
 class Spider(object):
-    def __init__(self, *, timeout=3, headers=cfg.default_headers, \
+    def __init__(self, *, timeout=10, headers=cfg.default_headers, \
             headers_path=None, keys=None, cache_path='html_cache'):
         self.sess = requests.Session()
         self.timeout=timeout
