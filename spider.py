@@ -51,7 +51,8 @@ class Spider(object):
 
 
     def login(self, url, success_judge, \
-            certcode_url=None, cache_name='./data', anonymous=False):
+            certcode_url=None, cache_name='./data', anonymous=False, \
+            **kwargs):
         from getpass import getpass
         _input = getpass if anonymous else input
         
@@ -63,8 +64,11 @@ class Spider(object):
             print('[LOG] try to import cv2..')
             try:
                 import cv2
-                print('[SUC] successfully import cv2. please watch the image window and input certcode..')
                 img = cv2.imread(certcode_path)
+                if 'recognition' in kwargs:
+                    print('[LOG] use auto recognition instead!')
+                    return kwargs['recognition'](img, kwargs['pattern'])
+                print('[SUC] successfully import cv2. please watch the image window and input certcode..')
                 cv2.imshow(cache_name, img)
                 cv2.waitKey(3000)
             except:
