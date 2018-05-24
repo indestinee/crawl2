@@ -3,16 +3,16 @@ from config import cfg
 from utils import Cache
 
 class Spider(object):
-    def __init__(self, *, timeout=10, headers=cfg.default_headers, \
-            headers_path=None, keys=None, cache_path='html_cache'):
+    def __init__(self, *, timeout=None, headers=cfg.default_headers, \
+            headers_path=None, keys=None, cache_path='html_cache',\
+            encoding=None):
         self.sess = requests.Session()
         self.timeout=timeout
         self.headers = self.make_headers(headers_path, keys) \
             if isinstance(headers_path, str) else headers
         self.cache_path = cache_path
         self.cache = Cache(self.cache_path)
-
-
+        self.encoding = encoding
 
     def make_headers(self, headers_path, keys):
         assert isinstance(keys, (list, set, None))
@@ -29,16 +29,32 @@ class Spider(object):
     def get(self, *args, **kwargs):
         if 'headers' not in kwargs:
             kwargs['headers'] = self.headers
-        # if 'timeout' not in kwargs:
-            # kwargs['timeout'] = self.timeout
-        return self.sess.get(*args, **kwargs)
+        if 'timeout' not in kwargs and self.timeout:
+            kwargs['timeout'] = self.timeout
+
+        try:
+            response = self.sess.get(*args, **kwargs)
+        except:
+            return None
+
+        if self.encoding:
+            response.encoding = self.encoding
+        return response
             
     def post(self, *args, **kwargs):
         if 'headers' not in kwargs:
             kwargs['headers'] = self.headers
-        # if 'timeout' not in kwargs:
-            # kwargs['timeout'] = self.timeout
-        return self.sess.post(*args, **kwargs)
+        if 'timeout' not in kwargs and self.timeout:
+            kwargs['timeout'] = self.timeout
+
+        try:
+            response = self.sess.post(*args, **kwargs)
+        except:
+            return None
+
+        if self.encoding:
+            response.encoding = self.encoding
+        return response
 
     def html_save(self, response, name):
         self.cache.bin_save(response.content, name)
